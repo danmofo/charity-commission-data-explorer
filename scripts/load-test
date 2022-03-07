@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+usage="Usage: ./load-test --env <env> --path <path> --json <json_file_with_payload> --concurrency-level <concurrency_level> --reqs <total_requests> --header <header>"
+
+while [[ "$#" -gt "0" ]]; do
+	case "$1" in
+		--env)
+			environment="$2"
+			;;
+		--header)
+			header="$2"
+			;;
+		--path)
+			path="$2"
+			;;
+		--subdomain)
+			subdomain="$2"
+			;;
+		--json)
+			json_payload="$2"
+			;;
+		--concurrency-level)
+			concurrency_level="$2"
+			;;
+		--reqs)
+			requests_to_make="$2"
+			;;
+		*)
+			echo "Unrecognised argument: $1"
+			exit 1
+	esac
+	shift
+	shift
+done
+
+if ! command -v aws &> /dev/null; then
+	echo 'Apache Bench is not installed. This script was tested with: Version 2.3 <$Revision: 1807734 $>'
+	echo 'If you use a lower version, some things may not work.'
+	exit 1
+fi
+
+echo "Apache bench version: "
+ab -V
+echo 'Script tested with Version 2.3 <$Revision: 1807734 $>, if you are using a different version, things may not work.'
+
+
+if [[ "$environment" == "" ]]; then
+	echo "No environment provided."
+	echo "$usage"
+	exit 1
+fi
+
+if [[ "$path" == "" ]]; then
+	echo "No path provided."
+	echo "$usage"
+	exit 1
+fi
+
+if [[ "$json_payload" != "" ]]; then
+	if [[ ! -f "$json_payload" ]]; then
+		echo "error: JSON payload file not found: $json_payload"
+		exit 1
+	fi
+
+	echo "info: Using JSON payload from file: $(cat ${json_payload})"
+fi
+
+if [[ "$concurrency_level" == "" ]]; then
+	echo "info: No concurreny level provided, defaulting to 1."
+	concurrency_level="1"
+fi
+
+if [[ "$requests_to_make" == "" ]]; then
+	echo "info: No requests to make provided, defaulting to 100."
+	requests_to_make="100"
+fi
+
+if [[ "$subdomain" == "" ]]; then
+	echo "info: No subdomain provided, defaulting to www"
+	subdomain="www"
+fi
+
+domain="http://localhost:8080"
+echo "info: Using domain: $domain"
+
+if [[ ! -z "$header" ]]; then
+	header_param="'-H $header'"
+else
+	header_param=""
+fi
+
+echo ""
+
+set -x
+
+if [[ "$json_payload" != "" ]]; then
+	ab \
+		-p $json_payload \
+		-T application/json \
+		-H "$header" \
+		-c $concurrency_level \
+		-n $requests_to_make \
+		-l \
+		${domain}${path}
+else
+	ab \
+		$header_param \
+		-c $concurrency_level \
+		-n $requests_to_make \
+		-l \
+		${domain}${path}
+fi
+
+echo "Done testing"
