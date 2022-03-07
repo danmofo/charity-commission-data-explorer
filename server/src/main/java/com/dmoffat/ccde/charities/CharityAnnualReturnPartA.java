@@ -9,46 +9,9 @@ import java.util.Objects;
 @Table(catalog = "charity_commission", name = "charity_annual_return_parta")
 public class CharityAnnualReturnPartA {
 
-    @Embeddable
-    public static class Id implements Serializable {
-        @Column(name = "ar_due_date")
-        private LocalDate dueDate;
-
-        @Column(name = "organisation_number")
-        private Integer organisationNumber;
-
-        public LocalDate getDueDate() {
-            return dueDate;
-        }
-
-        public void setDueDate(LocalDate dueDate) {
-            this.dueDate = dueDate;
-        }
-
-        public Integer getOrganisationNumber() {
-            return organisationNumber;
-        }
-
-        public void setOrganisationNumber(Integer organisationNumber) {
-            this.organisationNumber = organisationNumber;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Id id = (Id) o;
-            return dueDate.equals(id.dueDate) && organisationNumber.equals(id.organisationNumber);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(dueDate, organisationNumber);
-        }
-    }
-
-    @EmbeddedId
-    private Id id;
+    @Id
+    @Column(name = "organisation_number")
+    private Integer organisationNumber;
 
     @Column(name = "latest_fin_period_submitted")
     private boolean latestSubmitted;
@@ -64,6 +27,9 @@ public class CharityAnnualReturnPartA {
 
     @Column(name = "fin_period_end_date")
     private LocalDate financialPeriodEndDate;
+
+    @Column(name = "ar_due_date")
+    private LocalDate dueDate;
 
     @Column(name = "ar_received_date")
     private LocalDate receivedDate;
@@ -188,12 +154,32 @@ public class CharityAnnualReturnPartA {
     @Column(name = "count_volunteers")
     private int countVolunteers;
 
-    public Id getId() {
-        return id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organisation_number", insertable = false, updatable = false)
+    private Charity charity;
+
+    public LocalDate getDueDate() {
+        return dueDate;
     }
 
-    public void setId(Id id) {
-        this.id = id;
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public Charity getCharity() {
+        return charity;
+    }
+
+    public void setCharity(Charity charity) {
+        this.charity = charity;
+    }
+
+    public Integer getOrganisationNumber() {
+        return organisationNumber;
+    }
+
+    public void setOrganisationNumber(Integer organisationNumber) {
+        this.organisationNumber = organisationNumber;
     }
 
     public boolean isLatestSubmitted() {
@@ -567,7 +553,8 @@ public class CharityAnnualReturnPartA {
     @Override
     public String toString() {
         return "CharityAnnualReturnPartA{" +
-                "id=" + id +
+                "organisationNumber=" + organisationNumber +
+                ", receivedDate=" + receivedDate +
                 '}';
     }
 
@@ -576,11 +563,11 @@ public class CharityAnnualReturnPartA {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CharityAnnualReturnPartA that = (CharityAnnualReturnPartA) o;
-        return id.equals(that.id);
+        return organisationNumber.equals(that.organisationNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(organisationNumber);
     }
 }
