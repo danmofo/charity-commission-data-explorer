@@ -1,5 +1,12 @@
 <h1>Charities</h1>
 
-<#list charities as charity>
-  <li>${charity.name}</li>
-</#list>
+<h2>Search for a charity</h2>
+<input type="text" />
+
+${charity}
+
+<h2>Top charities</h2>
+<ul>
+    <li>By income</li>
+    <li>By government grants</li>
+</ul>

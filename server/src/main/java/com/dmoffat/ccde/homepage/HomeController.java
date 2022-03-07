@@ -18,6 +18,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model m) {
         m.addAttribute("charities", charityService.list());
+        m.addAttribute("charity", charityService.findByOrganisationNumber(1036733));
         return "home";
     }
 

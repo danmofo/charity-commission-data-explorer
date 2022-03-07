@@ -1,9 +1,6 @@
 package com.dmoffat.ccde.charities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -106,6 +103,12 @@ public class Charity {
 
     @Column(name = "charity_has_land")
     private boolean ownsLand;
+
+    @Transient
+    private CharityAnnualReturnPartA annualReturnPartA;
+
+    @Transient
+    private CharityAnnualReturnPartB annualReturnPartB;
 
     public Integer getOrganisationNumber() {
         return organisationNumber;
@@ -361,6 +364,22 @@ public class Charity {
 
     public void setOwnsLand(boolean ownsLand) {
         this.ownsLand = ownsLand;
+    }
+
+    public CharityAnnualReturnPartA getAnnualReturnPartA() {
+        return annualReturnPartA;
+    }
+
+    public void setAnnualReturnPartA(CharityAnnualReturnPartA annualReturnPartA) {
+        this.annualReturnPartA = annualReturnPartA;
+    }
+
+    public CharityAnnualReturnPartB getAnnualReturnPartB() {
+        return annualReturnPartB;
+    }
+
+    public void setAnnualReturnPartB(CharityAnnualReturnPartB annualReturnPartB) {
+        this.annualReturnPartB = annualReturnPartB;
     }
 
     @Override
