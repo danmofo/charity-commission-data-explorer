@@ -7,6 +7,6 @@ ${charity}
 
 <h2>Top charities</h2>
 <ul>
-    <li>By income</li>
+    <li><a href="/top/income">By income</a></li>
     <li>By government grants</li>
 </ul>
