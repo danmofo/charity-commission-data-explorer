@@ -24,9 +24,8 @@ public class CharityAnnualReturnPartADao extends HibernateDao<CharityAnnualRetur
     }
 
     /**
-     * This highlights a problem with the object model - a Charity can have many CharityAnnualReturnPartA's, but we
-     * only need the "latestSubmitted" row in this instance. So we fetch the CharityAnnualReturnPartA first, then
-     * grab the associated Charity. Probably a better way to do this :)
+     * We fetch from this end so we can do it in one query. If we queried from the Charity entity, e.g.
+     * "from Charity c join fetch c.annualReturns..." the pagination gets done in memory and is reallly slow. 
      */
     public List<Charity> listByTopIncome() {
         Query query = entityManager.createQuery(
@@ -46,7 +45,7 @@ public class CharityAnnualReturnPartADao extends HibernateDao<CharityAnnualRetur
 
         for(CharityAnnualReturnPartA annualReturn : results) {
             Charity charity = annualReturn.getCharity();
-            charity.setAnnualReturnPartA(annualReturn);
+            charity.setAnnualReturns(Collections.singletonList(annualReturn));
             charities.add(charity);
         }
 

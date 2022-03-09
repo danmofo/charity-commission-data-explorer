@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class CharityDao extends HibernateDao<Charity, Integer> {
-
 }

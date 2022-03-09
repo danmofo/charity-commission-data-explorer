@@ -1,7 +1,10 @@
 package com.dmoffat.ccde.charities;
 
+import com.dmoffat.ccde.common.Utils;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -99,16 +102,30 @@ public class Charity {
     private String activities;
 
     @Column(name = "charity_gift_aid")
-    private boolean registeredForGiftAid;
+    private String registeredForGiftAid;
 
     @Column(name = "charity_has_land")
     private boolean ownsLand;
 
-    @Transient
-    private CharityAnnualReturnPartA annualReturnPartA;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "charity")
+    private List<CharityAnnualReturnPartA> annualReturns;
 
-    @Transient
-    private CharityAnnualReturnPartB annualReturnPartB;
+    public CharityAnnualReturnPartA getLatestAnnualReturnPartA() {
+        if(annualReturns.isEmpty()) {
+            return null;
+        }
+        return annualReturns.stream()
+                .filter(CharityAnnualReturnPartA::isLatestSubmitted)
+                .collect(Utils.toSingleton());
+    }
+
+    public List<CharityAnnualReturnPartA> getAnnualReturns() {
+        return annualReturns;
+    }
+
+    public void setAnnualReturns(List<CharityAnnualReturnPartA> annualReturns) {
+        this.annualReturns = annualReturns;
+    }
 
     public Integer getOrganisationNumber() {
         return organisationNumber;
@@ -350,11 +367,11 @@ public class Charity {
         this.activities = activities;
     }
 
-    public boolean isRegisteredForGiftAid() {
+    public String getRegisteredForGiftAid() {
         return registeredForGiftAid;
     }
 
-    public void setRegisteredForGiftAid(boolean registeredForGiftAid) {
+    public void setRegisteredForGiftAid(String registeredForGiftAid) {
         this.registeredForGiftAid = registeredForGiftAid;
     }
 
@@ -364,22 +381,6 @@ public class Charity {
 
     public void setOwnsLand(boolean ownsLand) {
         this.ownsLand = ownsLand;
-    }
-
-    public CharityAnnualReturnPartA getAnnualReturnPartA() {
-        return annualReturnPartA;
-    }
-
-    public void setAnnualReturnPartA(CharityAnnualReturnPartA annualReturnPartA) {
-        this.annualReturnPartA = annualReturnPartA;
-    }
-
-    public CharityAnnualReturnPartB getAnnualReturnPartB() {
-        return annualReturnPartB;
-    }
-
-    public void setAnnualReturnPartB(CharityAnnualReturnPartB annualReturnPartB) {
-        this.annualReturnPartB = annualReturnPartB;
     }
 
     @Override

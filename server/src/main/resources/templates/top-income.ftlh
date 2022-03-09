@@ -2,6 +2,6 @@
 
 <ul>
 	<#list charities as charity>
-		<li>${charity.name} - ${charity.annualReturnPartA.totalGrossIncome}</li>
+		<li>${charity.name} - ${charity.getLatestAnnualReturnPartA().totalGrossIncome}</li>
 	</#list>
 </ul>

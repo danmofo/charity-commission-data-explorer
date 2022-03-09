@@ -22,7 +22,7 @@ public class CharityService {
         if(charity == null) {
             return null;
         }
-        charity.setAnnualReturnPartA(charityAnnualReturnPartADao.findLatestByOrganisationNumber(organisationNumber));
+//        charity.setAnnualReturnPartA(charityAnnualReturnPartADao.findLatestByOrganisationNumber(organisationNumber));
         return charity;
     }
 
