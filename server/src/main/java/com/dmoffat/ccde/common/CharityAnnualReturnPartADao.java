@@ -25,7 +25,10 @@ public class CharityAnnualReturnPartADao extends HibernateDao<CharityAnnualRetur
 
     /**
      * We fetch from this end so we can do it in one query. If we queried from the Charity entity, e.g.
-     * "from Charity c join fetch c.annualReturns..." the pagination gets done in memory and is reallly slow. 
+     * "from Charity c join fetch c.annualReturns..." the pagination gets done in memory and is reallly slow.
+     *
+     * Another way would be to fetch the charities with the highest total income and query the charity table with
+     * their IDs.
      */
     public List<Charity> listByTopIncome() {
         Query query = entityManager.createQuery(

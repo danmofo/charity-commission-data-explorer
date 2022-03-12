@@ -2,6 +2,6 @@
 
 <ul>
 	<#list charities as charity>
-		<li>${charity.name} - ${charity.getLatestAnnualReturnPartA().totalGrossIncome}</li>
+		<li><a href="/charities/${charity.organisationNumber?c}">${charity.name}</a> - ${charity.getLatestAnnualReturnPartA().totalGrossIncome?string.currency}</li>
 	</#list>
 </ul>
