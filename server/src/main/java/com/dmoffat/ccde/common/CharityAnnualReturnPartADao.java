@@ -116,6 +116,8 @@ public class CharityAnnualReturnPartADao extends HibernateDao<CharityAnnualRetur
     }
 
     public List<Charity> listByTopSalary() {
+        // Note: This query is really slow, server takes around 500ms to reply, vs 10ms without the sort.
+        // So this is possible place for optimisation in the future.
         Query query = entityManager.createQuery(
             "from CharityAnnualReturnPartA carpa " +
             "join fetch carpa.charity " +

@@ -1,5 +1,5 @@
 <h1>Top charities by salary</h1>
-
+<p>Note: It seems some of these charities have incorrectly entered their salary information when submitting it to the Charity Commission (total expenditure lower than total salary)</p>
 <table>
 	<tr>
 		<th style="width: 500px;">Charity name</th>
