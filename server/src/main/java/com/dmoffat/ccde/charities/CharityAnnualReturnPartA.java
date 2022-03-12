@@ -1,7 +1,9 @@
 package com.dmoffat.ccde.charities;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
-import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -153,6 +155,48 @@ public class CharityAnnualReturnPartA {
 
     @Column(name = "count_volunteers")
     private int countVolunteers;
+
+    @Formula(value = "(" +
+            "       count_salary_band_60001_70000 * 60000 +" +
+            "       count_salary_band_70001_80000 * 70000 +" +
+            "       count_salary_band_80001_90000 * 80000 +" +
+            "       count_salary_band_90001_100000 * 90000 +" +
+            "       count_salary_band_100001_110000 * 100000 +" +
+            "       count_salary_band_110001_120000 * 110000 +" +
+            "       count_salary_band_120001_130000 * 120000 +" +
+            "       count_salary_band_130001_140000 * 130000 +" +
+            "       count_salary_band_140001_150000 * 140000 + " +
+            "       count_salary_band_150001_200000 * 150000 +" +
+            "       count_salary_band_200001_250000 * 200000 +" +
+            "       count_salary_band_250001_300000 * 250000 +" +
+            "       count_salary_band_300001_350000 * 300000 +" +
+            "       count_salary_band_350001_400000 * 350000 +" +
+            "       count_salary_band_400001_450000 * 400000 +" +
+            "       count_salary_band_450001_500000 * 450000 +" +
+            "       count_salary_band_over_500000 * 500000" +
+            "   )")
+    private BigDecimal salaryRangeStart;
+
+    @Formula(value = "(" +
+            "       count_salary_band_60001_70000 * 70000 +" +
+            "       count_salary_band_70001_80000 * 80000 +" +
+            "       count_salary_band_80001_90000 * 90000 +" +
+            "       count_salary_band_90001_100000 * 100000 +" +
+            "       count_salary_band_100001_110000 * 110000 +" +
+            "       count_salary_band_110001_120000 * 120000 +" +
+            "       count_salary_band_120001_130000 * 130000 +" +
+            "       count_salary_band_130001_140000 * 140000 +" +
+            "       count_salary_band_140001_150000 * 150000 + " +
+            "       count_salary_band_150001_200000 * 200000 +" +
+            "       count_salary_band_200001_250000 * 250000 +" +
+            "       count_salary_band_250001_300000 * 300000 +" +
+            "       count_salary_band_300001_350000 * 350000 +" +
+            "       count_salary_band_350001_400000 * 400000 +" +
+            "       count_salary_band_400001_450000 * 450000 +" +
+            "       count_salary_band_450001_500000 * 500000 +" +
+            "       count_salary_band_over_500000 * 500000" +
+            "   )")
+    private BigDecimal salaryRangeEnd;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_number", insertable = false, updatable = false)
@@ -548,6 +592,14 @@ public class CharityAnnualReturnPartA {
 
     public void setCountVolunteers(int countVolunteers) {
         this.countVolunteers = countVolunteers;
+    }
+
+    public BigDecimal getSalaryRangeStart() {
+        return salaryRangeStart;
+    }
+
+    public BigDecimal getSalaryRangeEnd() {
+        return salaryRangeEnd;
     }
 
     @Override

@@ -8,5 +8,5 @@ ${charity}
 <h2>Top charities</h2>
 <ul>
     <li><a href="/top/income">By income</a></li>
-    <li>By government grants</li>
+    <li><a href="/top/salary">By salary</a></li>
 </ul>

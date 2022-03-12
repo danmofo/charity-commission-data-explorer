@@ -19,4 +19,8 @@ public class TopCharityService {
     public List<Charity> listByTopIncome() {
         return charityAnnualReturnPartADao.listByTopIncome();
     }
+
+    public List<Charity> listByTopSalary() {
+        return charityAnnualReturnPartADao.listByTopSalary();
+    }
 }
