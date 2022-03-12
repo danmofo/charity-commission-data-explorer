@@ -66,9 +66,12 @@ public class Charity {
     private String address5;
 
     @Column(name = "charity_contact_postcode")
-    private String phone;
+    private String postcode;
 
     @Column(name = "charity_contact_phone")
+    private String phone;
+
+    @Column(name = "charity_contact_email")
     private String email;
 
     @Column(name = "charity_contact_web")
@@ -109,6 +112,16 @@ public class Charity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "charity")
     private List<CharityAnnualReturnPartA> annualReturns;
+
+    public String getAddress() {
+        StringBuilder address = new StringBuilder(address1);
+        if(address2 != null) address.append(", ").append(address2);
+        if(address3 != null) address.append(", ").append(address3);
+        if(address4 != null) address.append(", ").append(address4);
+        if(address5 != null) address.append(", ").append(address5);
+        if(postcode != null) address.append(", ").append(postcode);
+        return address.toString();
+    }
 
     public CharityAnnualReturnPartA getLatestAnnualReturnPartA() {
         if(annualReturns.isEmpty()) {
@@ -271,20 +284,20 @@ public class Charity {
         this.address5 = address5;
     }
 
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getWebsiteUrl() {
@@ -381,6 +394,14 @@ public class Charity {
 
     public void setOwnsLand(boolean ownsLand) {
         this.ownsLand = ownsLand;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

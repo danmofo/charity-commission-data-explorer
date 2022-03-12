@@ -1,7 +1,34 @@
+<#if !charity??>
+    <p>No charity found with that organisation ID</p>
+</#if>
+
+
 <#if charity??>
     <h1>${charity.name}</h1>
 
+    <h2>Description</h2>
+    <p>${charity.activities}</p>
 
+    <h2>Contact</h2>
+    <p>
+        <b>Address</b> ${charity.address}
+    </p>
+
+    <#if charity.email??>
+        <p>
+            <b>Email</b> <a href="mailto:${charity.email}">${charity.email}</a>    
+        </p>
+    </#if>
+
+    <#if charity.websiteUrl??>
+        <p>
+            <b>Website</b> <a href="${charity.websiteUrl}">${charity.websiteUrl}</a>    
+        </p>
+        
+    </#if>
+
+    <h2>Financial</h2>
+    
     <div id="charity-income-chart" data-chart-data="${charityChartJson?string}"></div>
 
 
@@ -60,7 +87,8 @@
               enabled: false
             },
             stroke: {
-              curve: 'smooth'
+              curve: 'smooth',
+              width: [2, 2]
             },
             title: {
               text: 'Income and expenditure',
