@@ -1,6 +1,7 @@
 package com.dmoffat.ccde.common;
 
 import com.dmoffat.ccde.charities.Charity;
+import com.dmoffat.ccde.charities.CharityAnnualReturn;
 import com.dmoffat.ccde.charities.CharityAnnualReturnPartA;
 import org.springframework.stereotype.Repository;
 
@@ -53,5 +54,62 @@ public class CharityAnnualReturnPartADao extends HibernateDao<CharityAnnualRetur
         }
 
         return charities;
+    }
+
+    public List<CharityAnnualReturn> findSummaryByOrganisationNumber(Integer organisationNumber) {
+        Query query = entityManager.createNativeQuery(
+            "select " +
+            "   fin_period_start_date," +
+            "   fin_period_end_date," +
+            "   total_gross_income," +
+            "   income_from_government_contracts," +
+            "   income_from_government_grants," +
+            "   total_gross_expenditure," +
+            "   (" +
+            "       count_salary_band_60001_70000 * 60000 +" +
+            "       count_salary_band_70001_80000 * 70000 +" +
+            "       count_salary_band_80001_90000 * 80000 +" +
+            "       count_salary_band_90001_100000 * 90000 +" +
+            "       count_salary_band_100001_110000 * 100000 +" +
+            "       count_salary_band_110001_120000 * 110000 +" +
+            "       count_salary_band_120001_130000 * 120000 +" +
+            "       count_salary_band_130001_140000 * 130000 +" +
+            "       count_salary_band_140001_150000 * 140000 + " +
+            "       count_salary_band_150001_200000 * 150000 +" +
+            "       count_salary_band_200001_250000 * 200000 +" +
+            "       count_salary_band_250001_300000 * 250000 +" +
+            "       count_salary_band_300001_350000 * 300000 +" +
+            "       count_salary_band_350001_400000 * 350000 +" +
+            "       count_salary_band_400001_450000 * 400000 +" +
+            "       count_salary_band_450001_500000 * 450000 +" +
+            "       count_salary_band_over_500000 * 500000" +
+            "   ) as salary_range_start," +
+            "   (" +
+            "       count_salary_band_60001_70000 * 70000 +" +
+            "       count_salary_band_70001_80000 * 80000 +" +
+            "       count_salary_band_80001_90000 * 90000 +" +
+            "       count_salary_band_90001_100000 * 100000 +" +
+            "       count_salary_band_100001_110000 * 110000 +" +
+            "       count_salary_band_110001_120000 * 120000 +" +
+            "       count_salary_band_120001_130000 * 130000 +" +
+            "       count_salary_band_130001_140000 * 140000 +" +
+            "       count_salary_band_140001_150000 * 150000 + " +
+            "       count_salary_band_150001_200000 * 200000 +" +
+            "       count_salary_band_200001_250000 * 250000 +" +
+            "       count_salary_band_250001_300000 * 300000 +" +
+            "       count_salary_band_300001_350000 * 350000 +" +
+            "       count_salary_band_350001_400000 * 400000 +" +
+            "       count_salary_band_400001_450000 * 450000 +" +
+            "       count_salary_band_450001_500000 * 500000 +" +
+            "       count_salary_band_over_500000 * 500000" +
+            "   ) as salary_range_end " +
+            "from charity_commission.charity_annual_return_parta carp " +
+            "where organisation_number = :organisationNumber",
+            CharityAnnualReturn.class
+        );
+
+        query.setParameter("organisationNumber", organisationNumber);
+
+        return (List<CharityAnnualReturn>) query.getResultList();
     }
 }
